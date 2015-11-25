@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">SmartSocket</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">设置</string>
+    <string name="action_logout">登出</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    <!--登录界面-->
+    <string name="user_hint">你的手机号</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="register">注册</string>
+    <string name="login">登录</string>
+
+    <!--添加插座-->
+    <string name="socketname">插座名字：</string>
+    <string name="addBt">添加插座</string>
+</resources>
