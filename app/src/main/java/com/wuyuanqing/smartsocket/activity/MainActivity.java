@@ -145,13 +145,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setDefaultFragment(String response) {
-        toolbar.setTitle("testsocket1");
+        toolbar.setTitle("添加插座");
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        Fragment fragment = new ControlFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("socketName", "testsocket1");
-        bundle.putString("response", response);
-        fragment.setArguments(bundle);
+        Fragment fragment = new AddSocketFragment();
         getFragmentManager().beginTransaction().replace(R.id.layout_content, fragment).commit();
     }
 

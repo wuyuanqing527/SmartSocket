@@ -50,8 +50,33 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (!userEdit.getText().toString().equals("") || !passwordEdit.getText().toString().equals("")) {
+                    OkHttpClientManager.postAsyn(SmartSocketUrl.registerUrl, new OkHttpClientManager.ResultCallback<String>() {
+                        @Override
+                        public void onError(Request request, Exception e) {
+                            e.printStackTrace();
+                            l("出现错误");
+                        }
 
-                }else{
+                        @Override
+                        public void onResponse(String response) {
+                            ResLogin resLogin = new Gson().fromJson(response, ResLogin.class);
+                            if (resLogin.getErrorCode() == 0) {//注册成功
+                                t("注册成功");
+                                ISLOGIN = true;
+                                rememberUserName(resLogin);//记住用户名与密码
+                                Intent intent = new Intent();
+                                intent.setClass(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else if (resLogin.getErrorCode() == 1) {//注册失败
+                                t("注册失败");
+                            } else if (resLogin.getErrorCode() == 2) {//用户已经存在
+                                t("用户已经存在");
+                            }
+                        }
+                    }, new OkHttpClientManager.Param("register", JsonStringUtil.loginStr(userEdit.getText().toString(), passwordEdit.getText().toString())));
+
+                } else {
                     t("账号与密码不能为空");
                 }
 
@@ -65,13 +90,15 @@ public class LoginActivity extends BaseActivity {
                     OkHttpClientManager.postAsyn(SmartSocketUrl.loginUrl, new OkHttpClientManager.ResultCallback<String>() {
                         @Override
                         public void onError(Request request, Exception e) {
-
+                            e.printStackTrace();
+                            l("出现错误");
                         }
 
                         @Override
                         public void onResponse(String response) {
                             ResLogin resLogin = new Gson().fromJson(response, ResLogin.class);
                             if (resLogin.getErrorCode() == 0) {//登录成功
+                                t("登录成功");
                                 ISLOGIN = true;
                                 rememberUserName(resLogin);//记住用户名与密码
                                 Intent intent = new Intent();
