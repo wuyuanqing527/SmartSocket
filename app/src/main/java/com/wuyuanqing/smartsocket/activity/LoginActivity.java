@@ -87,6 +87,8 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (!userEdit.getText().toString().equals("") || !passwordEdit.getText().toString().equals("")) {
+
+                    l(JsonStringUtil.loginStr(userEdit.getText().toString(), passwordEdit.getText().toString()));
                     OkHttpClientManager.postAsyn(SmartSocketUrl.loginUrl, new OkHttpClientManager.ResultCallback<String>() {
                         @Override
                         public void onError(Request request, Exception e) {
@@ -96,19 +98,24 @@ public class LoginActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(String response) {
-                            ResLogin resLogin = new Gson().fromJson(response, ResLogin.class);
-                            if (resLogin.getErrorCode() == 0) {//登录成功
-                                t("登录成功");
-                                ISLOGIN = true;
-                                rememberUserName(resLogin);//记住用户名与密码
-                                Intent intent = new Intent();
-                                intent.setClass(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else if (resLogin.getErrorCode() == 1) {//密码错误
-                                t("请检查密码");
-                            } else if (resLogin.getErrorCode() == 2) {//没有用户
-                                t("请检查用户名");
+                            if(response == null){
+                                l("服务器返回值为空");
+                            }else {
+                                l(response);
+                                ResLogin resLogin = new Gson().fromJson(response, ResLogin.class);
+                                if (resLogin.getErrorCode() == 0) {//登录成功
+                                    t("登录成功");
+                                    ISLOGIN = true;
+                                    rememberUserName(resLogin);//记住用户名与密码
+                                    Intent intent = new Intent();
+                                    intent.setClass(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else if (resLogin.getErrorCode() == 1) {//密码错误
+                                    t("请检查密码");
+                                } else if (resLogin.getErrorCode() == 2) {//没有用户
+                                    t("请检查用户名");
+                                }
                             }
                         }
                     }, new OkHttpClientManager.Param("login", JsonStringUtil.loginStr(userEdit.getText().toString(), passwordEdit.getText().toString())));
