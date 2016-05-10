@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.activity_main);
 
         initView();
         //如果存有上次保存的用户名和密码，则显示数据。如果没有保存的用户名和密码，则不显示数据，提示用户登录

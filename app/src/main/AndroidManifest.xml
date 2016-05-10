@@ -17,6 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity"></activity>
+        <activity android:name=".activity.HistoryActivity"></activity>
+        <activity android:name=".activity.TimerSetActivity"></activity>
+        <activity android:name=".activity.TimerManageActivity"></activity>
     </application>
 
 </manifest>

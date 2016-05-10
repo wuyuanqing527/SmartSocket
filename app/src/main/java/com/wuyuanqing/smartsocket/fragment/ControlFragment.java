@@ -1,14 +1,17 @@
 package com.wuyuanqing.smartsocket.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.wuyuanqing.smartsocket.R;
+import com.wuyuanqing.smartsocket.activity.HistoryActivity;
+import com.wuyuanqing.smartsocket.activity.TimerManageActivity;
+import com.wuyuanqing.smartsocket.activity.TimerSetActivity;
 import com.wuyuanqing.smartsocket.constant.SocketConstant;
 import com.wuyuanqing.smartsocket.model.ResSocketLsit;
 import com.wuyuanqing.smartsocket.model.Socketer;
@@ -23,6 +26,7 @@ public class ControlFragment extends BaseFragment {
 
    // private TextView currentTV, ratedCurrentTV, voltageTV, ratedVoltageTV, powerTV, ratedPowerTV, workTimeTV, energyTV;
     private Button onOffBt;
+    private Button historyBt,timerBt;
     private String response, socketName;
     private boolean ISOPEN = false;//插座是否打开
     private PercentBar currentBar,voltageBar,powerBar,workTimeBar,energyBar;
@@ -50,6 +54,22 @@ public class ControlFragment extends BaseFragment {
                 energyBar.setPara("电能",100,0,socketer.getEnergy());
             }
         }
+
+        historyBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), HistoryActivity.class));
+            }
+        });
+
+        timerBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), TimerManageActivity.class));
+            }
+        });
+
+
         onOffBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +87,8 @@ public class ControlFragment extends BaseFragment {
 
     private void initView(View view) {
         onOffBt = (Button) view.findViewById(R.id.control_onoff_bt);
+        timerBt=(Button)view.findViewById(R.id.fragment_control_timer_bt);
+        historyBt=(Button)view.findViewById(R.id.fragment_control_history_bt);
 
         currentBar=(PercentBar)view.findViewById(R.id.current_bar);
         voltageBar=(PercentBar)view.findViewById(R.id.voltage_bar);
