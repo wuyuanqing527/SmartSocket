@@ -47,11 +47,11 @@ public class ControlFragment extends BaseFragment {
         ResSocketLsit socketLsit = new Gson().fromJson(response, ResSocketLsit.class);
         for (Socketer socketer : socketLsit.getSocketers()) {
             if (socketer.getSocketName().equals(socketName)) {
-                currentBar.setPara("电流",SocketConstant.rated_current,0,socketer.getCurrent());
-                voltageBar.setPara("电压",SocketConstant.rated_voltage,0,socketer.getVoltage());
-                powerBar.setPara("功率",SocketConstant.rated_power,0,socketer.getPower());
-                workTimeBar.setPara("工作时间",24,0,socketer.getWorkTime());
-                energyBar.setPara("电能",100,0,socketer.getEnergy());
+                currentBar.setPara("电流",SocketConstant.rated_current,0,Float.valueOf(decimalFormat(socketer.getCurrent())));
+                voltageBar.setPara("电压",SocketConstant.rated_voltage,0,Float.valueOf(decimalFormat(socketer.getVoltage())));
+                powerBar.setPara("功率",SocketConstant.rated_power,0,Float.valueOf(decimalFormat(socketer.getPower())));
+                workTimeBar.setPara("工作时间",24,0,Float.valueOf(decimalFormat(socketer.getWorkTime())));
+                energyBar.setPara("电能",100,0,Float.valueOf(decimalFormat(socketer.getEnergy())));
             }
         }
 

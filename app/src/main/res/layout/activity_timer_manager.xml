@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/timer_manager_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/Indigo_colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/timer_manager_back_bt"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/back_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电源定时"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/timer_manager_add_bt"
@@ -11,5 +33,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/add_grey"/>
+        android:background="@drawable/add_grey" />
+
+    <ListView
+        android:id="@+id/timer_manager_listview"
+        android:layout_below="@id/timer_manager_title_layout"
+        android:layout_above="@id/timer_manager_add_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+
+
 </RelativeLayout>

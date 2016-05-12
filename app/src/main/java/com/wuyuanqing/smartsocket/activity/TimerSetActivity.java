@@ -52,6 +52,7 @@ public class TimerSetActivity extends BaseActivity {
         BackBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(TimerSetActivity.this,TimerManageActivity.class));
                 finish();
             }
         });
