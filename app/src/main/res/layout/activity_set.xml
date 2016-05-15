@@ -7,12 +7,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/Indigo_colorPrimary"
+        android:background="@color/Indigo_colorPrimaryDark"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/history_back_bt"
+            android:id="@+id/activity_set_bt_login_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginLeft="20dp"
@@ -21,25 +21,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="电量统计"
             android:layout_marginLeft="20dp"
+            android:text="@string/set"
             android:textColor="@color/white"
             android:textSize="18sp" />
     </LinearLayout>
 
-    <ScrollView
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.wuyuanqing.smartsocket.widget.LineChartView
-                android:id="@+id/history_weekchart"
-                android:layout_width="match_parent"
-                android:layout_marginTop="30dp"
-                android:layout_height="400dp" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:gravity="center"
+       android:text="@string/set_version" />
 </LinearLayout>

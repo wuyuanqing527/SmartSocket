@@ -20,6 +20,7 @@
         <activity android:name=".activity.HistoryActivity"></activity>
         <activity android:name=".activity.TimerSetActivity"></activity>
         <activity android:name=".activity.TimerManageActivity"></activity>
+        <activity android:name=".activity.SetActivity"></activity>
     </application>
 
 </manifest>

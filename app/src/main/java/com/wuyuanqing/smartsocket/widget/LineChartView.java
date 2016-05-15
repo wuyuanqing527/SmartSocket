@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.wuyuanqing.smartsocket.R;
+
 import org.xclcharts.chart.CustomLineData;
 import org.xclcharts.chart.LineChart;
 import org.xclcharts.chart.LineData;
@@ -58,7 +60,7 @@ public class LineChartView extends DemoView implements Runnable {
         new Thread(this).start();
 
         //綁定手势滑动事件
-        this.bindTouch(this,chart);
+       // this.bindTouch(this,chart);
     }
 
 
@@ -75,7 +77,7 @@ public class LineChartView extends DemoView implements Runnable {
 
             //设置绘图区默认缩进px值,留置空间显示Axis,Axistitle....
             int [] ltrb = getBarLnDefaultSpadding();
-            chart.setPadding(DensityUtil.dip2px(getContext(), 45),ltrb[1], ltrb[2],  ltrb[3]);
+            chart.setPadding(DensityUtil.dip2px(getContext(), 30),ltrb[1], ltrb[2],  ltrb[3]);
 
 
             //设定数据源
@@ -84,11 +86,11 @@ public class LineChartView extends DemoView implements Runnable {
             //chart.setCustomLines(mCustomLineDataset);
 
             //数据轴最大值
-            chart.getDataAxis().setAxisMax(3500);
+            chart.getDataAxis().setAxisMax(7);
             //数据轴刻度间隔
-            chart.getDataAxis().setAxisSteps(100);
+            chart.getDataAxis().setAxisSteps(1);
             //指隔多少个轴刻度(即细刻度)后为主刻度
-            chart.getDataAxis().setDetailModeSteps(5);
+            chart.getDataAxis().setDetailModeSteps(1);
 
             //背景网格
             chart.getPlotGrid().showHorizontalLines();
@@ -131,7 +133,7 @@ public class LineChartView extends DemoView implements Runnable {
                 @Override
                 public String doubleFormatter(Double value) {
                     // TODO Auto-generated method stub
-                    DecimalFormat df=new DecimalFormat("#0");
+                    DecimalFormat df=new DecimalFormat("#0.0");
                     String label = df.format(value).toString();
                     return label;
                 }});
@@ -149,18 +151,17 @@ public class LineChartView extends DemoView implements Runnable {
             chart.setAxesClosed(false);
 
             //扩展绘图区右边分割的范围，让定制线的说明文字能显示出来
-            chart.getClipExt().setExtRight(150.f);
+            chart.getClipExt().setExtRight(200.f);
 
             //设置标签交错换行显示
             chart.getCategoryAxis().setLabelLineFeed(XEnum.LabelLineFeed.ODD_EVEN);
 
             //仅能横向移动
-            chart.setPlotPanMode(XEnum.PanMode.HORIZONTAL);
+           // chart.setPlotPanMode(XEnum.PanMode.HORIZONTAL);
 
 
             //chart.getDataAxis().hide();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             Log.e(TAG, e.toString());
         }
     }
@@ -168,8 +169,10 @@ public class LineChartView extends DemoView implements Runnable {
     //计算下平均线
     private double calcAvg()
     {
-        double total = 400d + 480d + 500d + 560d + 800d + 950d +1200d + 630d + 710d;
-        double yearNumber = 9d;
+//        double total = 400d + 480d + 500d + 560d + 800d + 950d +1200d + 630d + 710d;
+//        double yearNumber = 9d;
+        double total = 2d + 1.5d + 3d + 2.5d + 1.2d + 3.3d +4.0d ;
+        double yearNumber = 7d;
 
         return (total/yearNumber);
     }
@@ -177,25 +180,25 @@ public class LineChartView extends DemoView implements Runnable {
     private void chartDataSet()
     {
         //Line 1
-        LinkedList<Double> dataSeries1= new LinkedList<Double>();
-        dataSeries1.add(400d);
-        dataSeries1.add(480d);
-        dataSeries1.add(500d);
-        dataSeries1.add(560d);
-        LineData lineData1 = new LineData("单间(5层光线好)",dataSeries1, Color.rgb(234, 83, 71));
-        lineData1.setDotStyle(XEnum.DotStyle.DOT);
+//        LinkedList<Double> dataSeries1= new LinkedList<Double>();
+//        dataSeries1.add(400d);
+//        dataSeries1.add(480d);
+//        dataSeries1.add(500d);
+//        dataSeries1.add(560d);
+//        LineData lineData1 = new LineData("单间(5层光线好)",dataSeries1, Color.rgb(234, 83, 71));
+//        lineData1.setDotStyle(XEnum.DotStyle.DOT);
 
         //Line 2
         LinkedList<Double> dataSeries2= new LinkedList<Double>();
-        dataSeries2.add(0d);
-        dataSeries2.add(0d);
-        dataSeries2.add(0d);
-        dataSeries2.add(0d);
-        dataSeries2.add((double)800);
-        dataSeries2.add((double)950);
-        dataSeries2.add((double)1200);
+        dataSeries2.add(2d);
+        dataSeries2.add(1.5d);
+        dataSeries2.add(3d);
+        dataSeries2.add(2.5d);
+        dataSeries2.add(1.2d);
+        dataSeries2.add(3.3d);
+        dataSeries2.add(4.0d);
 
-        LineData lineData2 = new LineData("一房一厅(3层无光线)",dataSeries2,Color.rgb(75, 166, 51));
+        LineData lineData2 = new LineData("单日电量/度",dataSeries2,Color.rgb(75, 166, 51));
         lineData2.setDotStyle(XEnum.DotStyle.PRISMATIC);
         lineData2.getPlotLine().getDotPaint().setColor(Color.rgb(234, 142, 43));
         lineData2.getDotLabelPaint().setColor(Color.rgb(234, 142, 43));
@@ -204,64 +207,65 @@ public class LineChartView extends DemoView implements Runnable {
         //lineData2.getPlotLabel().hideBox();
 
         //Line 3
-        LinkedList<Double> dataSeries3= new LinkedList<Double>();
-        dataSeries3.add(0d);
-        dataSeries3.add(0d);
-        dataSeries3.add(0d);
-        dataSeries3.add(0d);
-        dataSeries3.add(0d);
-        dataSeries3.add(0d);
-        dataSeries3.add(0d);
-        dataSeries3.add(630d);
-        dataSeries3.add(710d);
-
-        LineData lineData3 = new LineData("单间(9层无电梯)",dataSeries3,Color.rgb(123, 89, 168));
-        lineData3.setDotStyle(XEnum.DotStyle.DOT);
+//        LinkedList<Double> dataSeries3= new LinkedList<Double>();
+//        dataSeries3.add(0d);
+//        dataSeries3.add(0d);
+//        dataSeries3.add(0d);
+//        dataSeries3.add(0d);
+//        dataSeries3.add(0d);
+//        dataSeries3.add(0d);
+//        dataSeries3.add(0d);
+//        dataSeries3.add(630d);
+//        dataSeries3.add(710d);
+//
+//        LineData lineData3 = new LineData("单间(9层无电梯)",dataSeries3,Color.rgb(123, 89, 168));
+//        lineData3.setDotStyle(XEnum.DotStyle.DOT);
 
         //轴上分界线的交叉点
         LinkedList<Double> dataSeries4= new LinkedList<Double>();
-        dataSeries4.add(1500d);
-        LinkedList<Double> dataSeries5= new LinkedList<Double>();
-        dataSeries5.add(3000d);
+        dataSeries4.add(5d);
+//        LinkedList<Double> dataSeries5= new LinkedList<Double>();
+//        dataSeries5.add(3000d);
         LinkedList<Double> dataSeries6= new LinkedList<Double>();
         dataSeries6.add(calcAvg());
 
-        LineData lineData4 = new LineData("",dataSeries4,Color.rgb(35, 172, 57));
+        LineData lineData4 = new LineData("",dataSeries4,Color.RED);
         lineData4.setDotStyle(XEnum.DotStyle.RECT);
-        LineData lineData5 = new LineData("",dataSeries5,Color.rgb(69, 181, 248));
-        lineData5.setDotStyle(XEnum.DotStyle.RECT);
-        LineData lineData6 = new LineData("",dataSeries6,Color.rgb(251, 79, 128));
+//        LineData lineData5 = new LineData("",dataSeries5,Color.rgb(69, 181, 248));
+//        lineData5.setDotStyle(XEnum.DotStyle.RECT);
+        LineData lineData6 = new LineData("",dataSeries6,getResources().getColor(R.color.light_blue));
         lineData6.setDotStyle(XEnum.DotStyle.TRIANGLE);
 
-        chartData.add(lineData1);
+//        chartData.add(lineData1);
         chartData.add(lineData2);
-        chartData.add(lineData3);
+//        chartData.add(lineData3);
 
         chartData.add(lineData4);
-        chartData.add(lineData5);
+ //       chartData.add(lineData5);
         chartData.add(lineData6);
 
 
         //批注
         //List<AnchorDataPoint> mAnchorSet = new ArrayList<AnchorDataPoint>();
-        AnchorDataPoint an4 = new AnchorDataPoint(0,2,XEnum.AnchorStyle.CAPRECT);
-        an4.setAnchor("批注");
-        an4.setBgColor(Color.rgb(255, 145, 126));
-        mAnchorSet.add(an4);
-        chart.setAnchorDataPoint(mAnchorSet);
+//        AnchorDataPoint an4 = new AnchorDataPoint(0,2,XEnum.AnchorStyle.CAPRECT);
+//        an4.setAnchor("批注");
+//        an4.setBgColor(Color.rgb(255, 145, 126));
+//        mAnchorSet.add(an4);
+//        chart.setAnchorDataPoint(mAnchorSet);
     }
 
     private void chartLabels()
     {
-        labels.add("2006");
-        labels.add("2007");
-        labels.add("2008");
-        labels.add("2009");
-        labels.add("2010");
-        labels.add("2011");
-        labels.add("2012");
-        labels.add("2013");
-        labels.add("2014");
+        labels.add("周日");
+        labels.add("周一");
+        labels.add("周二");
+        labels.add("周三");
+        labels.add("周四");
+        labels.add("周五");
+        labels.add("周六");
+
+//        labels.add("2013");
+//        labels.add("2014");
     }
 
     /**
@@ -269,9 +273,9 @@ public class LineChartView extends DemoView implements Runnable {
      */
     private void chartDesireLines()
     {
-        mCustomLineDataset.add(new CustomLineData("稍好",1500d,Color.rgb(35, 172, 57),5));
-        mCustomLineDataset.add(new CustomLineData("舒适",3000d,Color.rgb(69, 181, 248),5));
-        mCustomLineDataset.add(new CustomLineData("[个人均线]",calcAvg(),Color.rgb(251, 79, 128),6));
+        mCustomLineDataset.add(new CustomLineData("[预警线]",5d,Color.RED,5));
+//        mCustomLineDataset.add(new CustomLineData("舒适",3000d,Color.rgb(69, 181, 248),5));
+        mCustomLineDataset.add(new CustomLineData("[平均线]",calcAvg(),getResources().getColor(R.color.light_blue),6));
     }
 
     @Override
@@ -286,7 +290,6 @@ public class LineChartView extends DemoView implements Runnable {
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
         try {
             chartAnimation();
         }
@@ -327,19 +330,17 @@ public class LineChartView extends DemoView implements Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // TODO Auto-generated method stub
-
         super.onTouchEvent(event);
 
-        if(event.getAction() == MotionEvent.ACTION_UP)
-        {
-            //交叉线
-            if(chart.getDyLineVisible())
-            {
-                chart.getDyLine().setCurrentXY(event.getX(),event.getY());
-                if(chart.getDyLine().isInvalidate())this.invalidate();
-            }
-        }
+//        if(event.getAction() == MotionEvent.ACTION_UP)
+//        {
+//            //交叉线
+//            if(chart.getDyLineVisible())
+//            {
+//                chart.getDyLine().setCurrentXY(event.getX(),event.getY());
+//                if(chart.getDyLine().isInvalidate())this.invalidate();
+//            }
+//        }
         return true;
     }
 

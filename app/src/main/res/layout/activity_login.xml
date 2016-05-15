@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/bt_login_back"
+            android:id="@+id/activity_login_bt_login_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginLeft="20dp"
@@ -28,18 +28,19 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/edit_login_user"
+        android:id="@+id/activity_login_edit_login_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="100dp"
+        android:inputType="phone"
         android:drawableLeft="@drawable/user"
         android:hint="@string/user_hint"
         android:paddingLeft="5dp" />
 
     <EditText
-        android:id="@+id/edit_login_password"
+        android:id="@+id/activity_login_edit_login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -52,23 +53,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="30dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/bt_register"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/register" />
+        <!-- <Button
+             android:id="@+id/bt_register"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:text="@string/register" />-->
 
         <Button
-            android:id="@+id/bt_login"
+            android:id="@+id/activity_login_bt_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginTop="50dp"
             android:layout_weight="1"
+            android:background="@color/link_text_material_light"
             android:text="@string/login" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/activity_login_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/register" />
 </LinearLayout>

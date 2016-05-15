@@ -10,8 +10,13 @@
     <!--登录界面-->
     <string name="user_hint">你的手机号</string>
     <string name="password_hint">请输入密码</string>
-    <string name="register">注册</string>
+    <string name="register"><a href="http://www.baidu.com">点击注册 —></a></string>
     <string name="login">登录</string>
+
+    <!--设置界面-->
+    <string name="set">设置</string>
+    <string name="set_version">版本：0.1_201605010</string>
+
 
     <!--添加插座-->
     <string name="socketname">插座名字：</string>

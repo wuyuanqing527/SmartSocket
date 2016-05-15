@@ -21,19 +21,15 @@
  */
 package com.wuyuanqing.smartsocket.widget;
 
-import java.util.List;
-
-import org.xclcharts.common.DensityUtil;
-import org.xclcharts.renderer.XChart;
-import org.xclcharts.view.ChartView;
-
 import android.content.Context;
 import android.util.AttributeSet;
+
+import org.xclcharts.common.DensityUtil;
+import org.xclcharts.view.ChartView;
 
 /**
  * @ClassName DemoView
  * @Description  各个例子view的view基类
- * @author XiongChuanLiang<br/>(xcl_168@aliyun.com)
  */
 public class DemoView extends ChartView{
 
@@ -58,9 +54,9 @@ public class DemoView extends ChartView{
 	protected int[] getBarLnDefaultSpadding()
 	{
 		int [] ltrb = new int[4];
-		ltrb[0] = DensityUtil.dip2px(getContext(), 40); //left	
+		ltrb[0] = DensityUtil.dip2px(getContext(), 10); //left
 		ltrb[1] = DensityUtil.dip2px(getContext(), 60); //top	
-		ltrb[2] = DensityUtil.dip2px(getContext(), 20); //right	
+		ltrb[2] = DensityUtil.dip2px(getContext(), 40); //right
 		ltrb[3] = DensityUtil.dip2px(getContext(), 40); //bottom						
 		return ltrb;
 	}

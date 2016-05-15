@@ -6,8 +6,8 @@
     <LinearLayout
         android:id="@+id/fragment_control_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
 
@@ -22,39 +22,47 @@
             android:id="@+id/voltage_bar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="1" />
 
         <com.wuyuanqing.smartsocket.widget.PercentBar
             android:id="@+id/power_bar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="1" />
 
         <com.wuyuanqing.smartsocket.widget.PercentBar
             android:id="@+id/worktime_bar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="1" />
 
         <com.wuyuanqing.smartsocket.widget.PercentBar
             android:id="@+id/energy_bar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginRight="20dp"
             android:layout_weight="1" />
 
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/fragment_control_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/fragment_control_bar_layout"
+        android:layout_marginTop="20dp"
+        android:background="@color/link_text_material_light"></View>
+
     <LinearLayout
         android:id="@+id/fragment_control_menu"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@id/fragment_control_bar_layout"
+        android:layout_height="80dp"
+        android:layout_below="@id/fragment_control_divider"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
@@ -63,14 +71,14 @@
 
         <Button
             android:id="@+id/fragment_control_history_bt"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/chart_green" />
 
         <Button
             android:id="@+id/fragment_control_timer_bt"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="50dp"
             android:background="@drawable/watch_green" />
     </LinearLayout>
@@ -87,7 +95,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="历史记录" />
+            android:text="电量统计" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -105,8 +113,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:background="@color/link_text_material_light"
-            android:layout_height="1dp"></View>
+            android:layout_height="1dp"
+            android:background="@color/link_text_material_light"></View>
+
         <Button
             android:id="@+id/control_onoff_bt"
             android:layout_width="80dp"

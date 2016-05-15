@@ -13,17 +13,18 @@
 
         <Button
             android:id="@+id/timer_manager_back_bt"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/back_white" />
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="电源定时"
+            android:text="定时管理"
+            android:layout_marginLeft="20dp"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <Button

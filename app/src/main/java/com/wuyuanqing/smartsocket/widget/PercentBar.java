@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -92,7 +91,15 @@ public class PercentBar extends View {
     }
 
     private void drawActuallyNum(Canvas canvas) {
-        float actuallyTop = (1 - actuallyNum / (maxNum - minNum)) * getHeight() * 8 / 10;
+        float actuallyTop=0;
+
+        if(actuallyNum/(maxNum-minNum)>0.5){
+            actuallyTop = (1 - actuallyNum / (maxNum - minNum)) * getHeight() * 8 / 10+perHight;
+        }else{
+            actuallyTop = (1 - actuallyNum / (maxNum - minNum)) * getHeight() * 8 / 10;
+        }
+
+
         Rect actuallyRect = new Rect(getLeft(), (int) actuallyTop, getWidth(), (int) actuallyTop + perHight);
         float acturallyLen = textPaint.measureText("" + actuallyNum);
         Paint.FontMetricsInt fontMetricsInt = textPaint.getFontMetricsInt();

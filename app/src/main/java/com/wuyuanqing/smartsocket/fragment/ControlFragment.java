@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import com.wuyuanqing.smartsocket.R;
 import com.wuyuanqing.smartsocket.activity.HistoryActivity;
 import com.wuyuanqing.smartsocket.activity.TimerManageActivity;
-import com.wuyuanqing.smartsocket.activity.TimerSetActivity;
 import com.wuyuanqing.smartsocket.constant.SocketConstant;
 import com.wuyuanqing.smartsocket.model.ResSocketLsit;
 import com.wuyuanqing.smartsocket.model.Socketer;
@@ -47,11 +46,11 @@ public class ControlFragment extends BaseFragment {
         ResSocketLsit socketLsit = new Gson().fromJson(response, ResSocketLsit.class);
         for (Socketer socketer : socketLsit.getSocketers()) {
             if (socketer.getSocketName().equals(socketName)) {
-                currentBar.setPara("电流",SocketConstant.rated_current,0,Float.valueOf(decimalFormat(socketer.getCurrent())));
-                voltageBar.setPara("电压",SocketConstant.rated_voltage,0,Float.valueOf(decimalFormat(socketer.getVoltage())));
-                powerBar.setPara("功率",SocketConstant.rated_power,0,Float.valueOf(decimalFormat(socketer.getPower())));
-                workTimeBar.setPara("工作时间",24,0,Float.valueOf(decimalFormat(socketer.getWorkTime())));
-                energyBar.setPara("电能",100,0,Float.valueOf(decimalFormat(socketer.getEnergy())));
+                currentBar.setPara("电流(A)",SocketConstant.rated_current,0,Float.valueOf(decimalFormat(socketer.getCurrent())));
+                voltageBar.setPara("电压(V)",SocketConstant.rated_voltage,0,Float.valueOf(decimalFormat(socketer.getVoltage())));
+                powerBar.setPara("功率(W)",SocketConstant.rated_power,0,Float.valueOf(decimalFormat(socketer.getPower())));
+                workTimeBar.setPara("工作时间(H)",24,0,Float.valueOf(decimalFormat(socketer.getWorkTime())));
+                energyBar.setPara("电能(KW/H)",100,0,Float.valueOf(decimalFormat(socketer.getEnergy())));
             }
         }
 

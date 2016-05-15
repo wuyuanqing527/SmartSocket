@@ -1,9 +1,11 @@
 package com.wuyuanqing.smartsocket.model;
 
+import java.io.Serializable;
+
 /**
  * Created by wyq on 2016/5/11.
  */
-public class TimerBean extends User{
+public class TimerBean extends User implements Serializable{
 
     private String startTime="";
     private String endTime="";

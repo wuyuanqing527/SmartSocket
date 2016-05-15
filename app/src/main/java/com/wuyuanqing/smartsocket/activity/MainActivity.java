@@ -1,12 +1,13 @@
 package com.wuyuanqing.smartsocket.activity;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,13 +23,12 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.wuyuanqing.smartsocket.R;
-import com.wuyuanqing.smartsocket.fragment.AddSocketFragment;
+import com.wuyuanqing.smartsocket.constant.SmartSocketUrl;
 import com.wuyuanqing.smartsocket.fragment.ControlFragment;
 import com.wuyuanqing.smartsocket.model.ResLogin;
 import com.wuyuanqing.smartsocket.model.ResSocketLsit;
 import com.wuyuanqing.smartsocket.util.JsonStringUtil;
 import com.wuyuanqing.smartsocket.util.OkHttpClientManager;
-import com.wuyuanqing.smartsocket.constant.SmartSocketUrl;
 import com.wuyuanqing.smartsocket.widget.RoundImageViewByXfermode;
 
 import java.lang.reflect.Method;
@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
     private ArrayList<String> drawerList = null;
     private SharedPreferences preferences;
 
-   // public  static boolean ISLOGIN=false;//用户是否登录
+    // public  static boolean ISLOGIN=false;//用户是否登录
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +56,17 @@ public class MainActivity extends BaseActivity {
 
         initView();
         //如果存有上次保存的用户名和密码，则显示数据。如果没有保存的用户名和密码，则不显示数据，提示用户登录
-        if(!ISLOGIN){
+        if (!ISLOGIN) {
             if (!preferences.getString("username", "").equals("") && !preferences.getString("password", "").equals("")) {
                 loginAndShow(preferences.getString("username", ""), preferences.getString("password", ""));
 
             } else {
-                ISLOGIN=false;
+                ISLOGIN = false;
                 textName.setText("请点击头像登录");
             }
 
-        }else{
-            headImage.setClickable(false);
+        } else {
+            //headImage.setClickable(false);
             OkHttpClientManager.postAsyn(SmartSocketUrl.getSocketListUrl, new OkHttpClientManager.ResultCallback<String>() {
                 @Override
                 public void onError(Request request, Exception e) {
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity {
                     initDrawerData(response);
                     setDefaultFragment(response);
                 }
-            }, new OkHttpClientManager.Param("", JsonStringUtil.getSocketList(preferences.getString("username",""))));
+            }, new OkHttpClientManager.Param("", JsonStringUtil.getSocketList(preferences.getString("username", ""))));
             // l(JsonStringUtil.getSocketList("testuser1"));
         }
 
@@ -106,6 +106,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loginAndShow(String username, String password) {
+        final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+        dialog.show();
         OkHttpClientManager.postAsyn(SmartSocketUrl.loginUrl, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
@@ -114,29 +116,34 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response) {
-                ResLogin resLogin = new Gson().fromJson(response, ResLogin.class);
-                if (resLogin.getErrorCode() == 0) {//登录成功
-                    ISLOGIN=true;
-                    //headImage.setClickable(false);
-                    OkHttpClientManager.postAsyn(SmartSocketUrl.getSocketListUrl, new OkHttpClientManager.ResultCallback<String>() {
-                        @Override
-                        public void onError(Request request, Exception e) {
-                            l("载入数据出错");
-                            e.printStackTrace();
-                        }
+                if (response == null) {
+                    l("服务器返回值为空");
+                } else {
+                    dialog.dismiss();
+                    ResLogin resLogin = new Gson().fromJson(response, ResLogin.class);
+                    if (resLogin.getErrorCode() == 0) {//登录成功
+                        ISLOGIN = true;
+                        //headImage.setClickable(false);
+                        OkHttpClientManager.postAsyn(SmartSocketUrl.getSocketListUrl, new OkHttpClientManager.ResultCallback<String>() {
+                            @Override
+                            public void onError(Request request, Exception e) {
+                                l("载入数据出错");
+                                e.printStackTrace();
+                            }
 
-                        @Override
-                        public void onResponse(String response) {
-                            l(response);
-                            initDrawerData(response);
-                            setDefaultFragment(response);
-                        }
-                    }, new OkHttpClientManager.Param("", JsonStringUtil.getSocketList(preferences.getString("username",""))));
-                    // l(JsonStringUtil.getSocketList("testuser1"));
-                } else if (resLogin.getErrorCode() == 1) {//密码错误
-                    t("请检查密码");
-                } else if (resLogin.getErrorCode() == 2) {//没有用户
-                    t("请检查用户名");
+                            @Override
+                            public void onResponse(String response) {
+                                l(response);
+                                initDrawerData(response);
+                                setDefaultFragment(response);
+                            }
+                        }, new OkHttpClientManager.Param("", JsonStringUtil.getSocketList(preferences.getString("username", ""))));
+                        // l(JsonStringUtil.getSocketList("testuser1"));
+                    } else if (resLogin.getErrorCode() == 1) {//密码错误
+                        t("请检查密码");
+                    } else if (resLogin.getErrorCode() == 2) {//没有用户
+                        t("请检查用户名");
+                    }
                 }
             }
         }, new OkHttpClientManager.Param("loginAndShow", JsonStringUtil.loginStr(username, password)));
@@ -145,16 +152,21 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setDefaultFragment(String response) {
-        toolbar.setTitle("添加插座");
+        toolbar.setTitle(drawerList.get(0));
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        Fragment fragment = new AddSocketFragment();
+
+        Fragment fragment = new ControlFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("socketName", drawerList.get(0));
+        bundle.putString("response", response);
+        fragment.setArguments(bundle);
         getFragmentManager().beginTransaction().replace(R.id.layout_content, fragment).commit();
     }
 
     private void initDrawerData(final String response) {
         ResSocketLsit socketLsit = new Gson().fromJson(response, ResSocketLsit.class);
         drawerList = new ArrayList<String>();
-        drawerList.add("添加插座");
+        // drawerList.add("添加插座");
         for (int i = 0; i < socketLsit.getSocketers().size(); i++) {
             drawerList.add(socketLsit.getSocketers().get(i).getSocketName());
         }
@@ -164,21 +176,21 @@ public class MainActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    toolbar.setTitle("添加插座");
-                    toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-                    getFragmentManager().beginTransaction().replace(R.id.layout_content, new AddSocketFragment()).commit();
-                } else {
-                    toolbar.setTitle(drawerList.get(position));
-                    toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+//                if (position == 0) {
+//                    toolbar.setTitle("添加插座");
+//                    toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+//                    getFragmentManager().beginTransaction().replace(R.id.layout_content, new AddSocketFragment()).commit();
+//                } else {
+                toolbar.setTitle(drawerList.get(position));
+                toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
 
-                    Fragment fragment = new ControlFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("socketName", drawerList.get(position));
-                    bundle.putString("response", response);
-                    fragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction().replace(R.id.layout_content, fragment).commit();
-                }
+                Fragment fragment = new ControlFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("socketName", drawerList.get(position));
+                bundle.putString("response", response);
+                fragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.layout_content, fragment).commit();
+                //    }
 
                 drawerLayout.closeDrawer(leftView);
             }
@@ -203,7 +215,7 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
-                 finish();
+                finish();
             }
         });
 
@@ -231,7 +243,7 @@ public class MainActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            startActivity(new Intent(MainActivity.this, SetActivity.class));
         } else if (id == R.id.action_logout) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();

@@ -18,21 +18,24 @@ import java.util.List;
  */
 public class TimerManageActivity extends BaseActivity {
 
-    private Button addBt,backBt;
+    private Button addBt, backBt;
     private ListView timerList;
     private List<TimerBean> timerBeanList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer_manager);
-        addBt=(Button)findViewById(R.id.timer_manager_add_bt);
-        backBt=(Button)findViewById(R.id.timer_manager_back_bt);
-        timerList=(ListView)findViewById(R.id.timer_manager_listview);
+        addBt = (Button) findViewById(R.id.timer_manager_add_bt);
+        backBt = (Button) findViewById(R.id.timer_manager_back_bt);
+        timerList = (ListView) findViewById(R.id.timer_manager_listview);
 
-        timerBeanList=new ArrayList<>();
-        TimerListAdapter adapter=new TimerListAdapter(this,timerBeanList);
-        timerList.setAdapter(adapter);
-
+        timerBeanList = new ArrayList<>();
+        // TimerBean timerBean = (TimerBean) getIntent().getSerializableExtra("timerBean");
+        if (timerBeanList.size()>0) {
+            TimerListAdapter adapter = new TimerListAdapter(this, timerBeanList);
+            timerList.setAdapter(adapter);
+        }
         backBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,9 +45,23 @@ public class TimerManageActivity extends BaseActivity {
         addBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TimerManageActivity.this,TimerSetActivity.class));
-                finish();
+                startActivityForResult(new Intent(TimerManageActivity.this, TimerSetActivity.class),1);
+                //finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1&&data!=null){
+            TimerBean timerBean = (TimerBean) data.getSerializableExtra("timerBean");
+            if(timerBean!=null){
+                timerBeanList.add(timerBean);
+                TimerListAdapter adapter = new TimerListAdapter(this, timerBeanList);
+                timerList.setAdapter(adapter);
+                timerList.invalidate();
+            }
+        }
     }
 }

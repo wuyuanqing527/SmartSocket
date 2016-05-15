@@ -1,15 +1,16 @@
 package com.wuyuanqing.smartsocket.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.wuyuanqing.smartsocket.R;
+import com.wuyuanqing.smartsocket.model.TimerBean;
 
 /**
  * Created by wyq on 2016/5/10.
@@ -52,7 +53,6 @@ public class TimerSetActivity extends BaseActivity {
         BackBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TimerSetActivity.this,TimerManageActivity.class));
                 finish();
             }
         });
@@ -61,14 +61,24 @@ public class TimerSetActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(!confirm){
-                    confirmBt.setBackgroundResource(R.drawable.confirm_green);
-                    confirm=true;
+
                     Intent intent=new Intent();
-                    intent.putExtra("startTime",startTime.getText().equals("")?"":startTime.getText());
-                    intent.putExtra("endTime",endTime.getText().equals("")?"":endTime.getText());
-                    intent.setClass(TimerSetActivity.this,TimerManageActivity.class);
-                    startActivity(intent);
-                    finish();
+                    TimerBean timerBean=new TimerBean();
+                    timerBean.setStartTime(startTime.getText().equals("") ? "" : startTime.getText().toString());
+                    timerBean.setEndTime(endTime.getText().equals("") ? "" : endTime.getText().toString());
+                    timerBean.setOnOff(true);
+                    if((!timerBean.getStartTime().equals(""))&&(!timerBean.getEndTime().equals(""))) {
+                        confirmBt.setBackgroundResource(R.drawable.confirm_green);
+                        confirm=true;
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("timerBean", timerBean);
+                        intent.putExtras(bundle);
+                        setResult(1, intent);
+                        finish();
+                    }else{
+                        Toast.makeText(TimerSetActivity.this,"您未设置时间！",Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
