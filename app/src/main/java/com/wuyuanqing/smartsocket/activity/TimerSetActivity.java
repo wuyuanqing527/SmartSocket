@@ -69,8 +69,7 @@ public class TimerSetActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (!confirm) {
-                    confirmBt.setBackgroundResource(R.drawable.confirm_green);
-                    confirm = true;
+
                     Intent intent = new Intent();
                     TimerBean timerBean = new TimerBean();
                     timerBean.setSocketName(socketName);
@@ -138,6 +137,8 @@ public class TimerSetActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response) {
+                confirmBt.setBackgroundResource(R.drawable.confirm_green);
+                confirm = true;
                 ResTimer resTimer = new Gson().fromJson(response.toString(), ResTimer.class);
                 if (resTimer.getResultCode() == 0) {
                     l("查询所有定时失败");
