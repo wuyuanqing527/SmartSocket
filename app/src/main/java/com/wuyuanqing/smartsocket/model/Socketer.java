@@ -1,7 +1,5 @@
 package com.wuyuanqing.smartsocket.model;
 
-import java.sql.Date;
-
 public class Socketer {
 
 	private int socketId;
@@ -11,8 +9,8 @@ public class Socketer {
 	private float voltage;//电压
 	private float power;//功率
 	private float energy;//电能
-	private Date openTime;//打开时间
-	private Date closeTime;//关闭时间
+//	private Date openTime;//打开时间
+//	private Date closeTime;//关闭时间
 	private int workTime;//工作时间 /s
 	private boolean onOff;//开关
 	private String info;//插座信息
@@ -60,18 +58,18 @@ public class Socketer {
 	public void setInfo(String info) {
 		this.info = info;
 	}
-	public Date getOpenTime() {
-		return openTime;
-	}
-	public void setOpenTime(Date openTime) {
-		this.openTime = openTime;
-	}
-	public Date getCloseTime() {
-		return closeTime;
-	}
-	public void setCloseTime(Date closeTime) {
-		this.closeTime = closeTime;
-	}
+//	public Date getOpenTime() {
+//		return openTime;
+//	}
+//	public void setOpenTime(Date openTime) {
+//		this.openTime = openTime;
+//	}
+//	public Date getCloseTime() {
+//		return closeTime;
+//	}
+//	public void setCloseTime(Date closeTime) {
+//		this.closeTime = closeTime;
+//	}
 	public int getWorkTime() {
 		return workTime;
 	}

@@ -34,7 +34,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="100dp"
-        android:inputType="phone"
         android:drawableLeft="@drawable/user"
         android:hint="@string/user_hint"
         android:paddingLeft="5dp" />

@@ -64,7 +64,10 @@ public class ControlFragment extends BaseFragment {
         timerBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), TimerManageActivity.class));
+                Intent intent=new Intent();
+                intent.putExtra("socketName",socketName);
+                intent.setClass(getActivity(), TimerManageActivity.class);
+                startActivity(intent);
             }
         });
 

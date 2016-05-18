@@ -9,8 +9,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
 import com.wuyuanqing.smartsocket.R;
+import com.wuyuanqing.smartsocket.constant.SmartSocketUrl;
+import com.wuyuanqing.smartsocket.model.ResTimer;
 import com.wuyuanqing.smartsocket.model.TimerBean;
+import com.wuyuanqing.smartsocket.util.JsonStringUtil;
+import com.wuyuanqing.smartsocket.util.OkHttpClientManager;
 
 /**
  * Created by wyq on 2016/5/10.
@@ -18,17 +24,19 @@ import com.wuyuanqing.smartsocket.model.TimerBean;
 public class TimerSetActivity extends BaseActivity {
 
     private TimePicker timePicker;
-    private Button BackBt,confirmBt;
+    private Button BackBt, confirmBt;
     private TextView startTimeText, endTimeText;
     private TextView startTime, endTime;
     private LinearLayout startLayout, endLayout;
     private int hour, minute;
-    private boolean start = true, end = false,confirm=false;
+    private boolean start = true, end = false, confirm = false;
+    private String socketName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
+        socketName = getIntent().getStringExtra("socketName");
 
         initView();
 
@@ -38,8 +46,8 @@ public class TimerSetActivity extends BaseActivity {
 
     private void initView() {
 
-        BackBt=(Button)findViewById(R.id.timer_back_bt);
-        confirmBt=(Button)findViewById(R.id.timer_confirm_bt);
+        BackBt = (Button) findViewById(R.id.timer_back_bt);
+        confirmBt = (Button) findViewById(R.id.timer_confirm_bt);
 
         timePicker = (TimePicker) findViewById(R.id.timer_timepicker);
         startLayout = (LinearLayout) findViewById(R.id.timer_start_time_layout);
@@ -60,23 +68,26 @@ public class TimerSetActivity extends BaseActivity {
         confirmBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!confirm){
-
-                    Intent intent=new Intent();
-                    TimerBean timerBean=new TimerBean();
+                if (!confirm) {
+                    confirmBt.setBackgroundResource(R.drawable.confirm_green);
+                    confirm = true;
+                    Intent intent = new Intent();
+                    TimerBean timerBean = new TimerBean();
+                    timerBean.setSocketName(socketName);
                     timerBean.setStartTime(startTime.getText().equals("") ? "" : startTime.getText().toString());
                     timerBean.setEndTime(endTime.getText().equals("") ? "" : endTime.getText().toString());
                     timerBean.setOnOff(true);
-                    if((!timerBean.getStartTime().equals(""))&&(!timerBean.getEndTime().equals(""))) {
-                        confirmBt.setBackgroundResource(R.drawable.confirm_green);
-                        confirm=true;
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("timerBean", timerBean);
-                        intent.putExtras(bundle);
-                        setResult(1, intent);
-                        finish();
-                    }else{
-                        Toast.makeText(TimerSetActivity.this,"您未设置时间！",Toast.LENGTH_SHORT).show();
+                    if ((!timerBean.getStartTime().equals("")) || (!timerBean.getEndTime().equals(""))) {
+//                        confirmBt.setBackgroundResource(R.drawable.confirm_green);
+//                        confirm=true;
+//                        Bundle bundle = new Bundle();
+//                        bundle.putSerializable("timerBean", timerBean);
+//                        intent.putExtras(bundle);
+//                        setResult(1, intent);
+                        addTimer(timerBean);
+                        // finish();
+                    } else {
+                        Toast.makeText(TimerSetActivity.this, "您未设置时间！", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -116,5 +127,25 @@ public class TimerSetActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private void addTimer(TimerBean timerBean) {
+        OkHttpClientManager.postAsyn(SmartSocketUrl.timerUrl, new OkHttpClientManager.ResultCallback<String>() {
+            @Override
+            public void onError(Request request, Exception e) {
+                l("访问服务器出现问题");
+            }
+
+            @Override
+            public void onResponse(String response) {
+                ResTimer resTimer = new Gson().fromJson(response.toString(), ResTimer.class);
+                if (resTimer.getResultCode() == 0) {
+                    l("查询所有定时失败");
+                } else {
+                    l("添加定时的成功");
+                    finish();
+                }
+            }
+        }, new OkHttpClientManager.Param("queryAllTimer", JsonStringUtil.addTimer(timerBean)));
     }
 }

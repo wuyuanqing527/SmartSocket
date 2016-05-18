@@ -10,6 +10,7 @@ import android.widget.Toast;
 public class BaseActivity extends AppCompatActivity {
 
     public  static boolean ISLOGIN=false;//用户是否登录
+    public static double powerLimitNum=5;
 
     public void l(String s){
         Log.i("activity",s);

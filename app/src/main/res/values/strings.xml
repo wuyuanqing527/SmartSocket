@@ -8,7 +8,7 @@
     <string name="close">close</string>
 
     <!--登录界面-->
-    <string name="user_hint">你的手机号</string>
+    <string name="user_hint">你的账号</string>
     <string name="password_hint">请输入密码</string>
     <string name="register"><a href="http://www.baidu.com">点击注册 —></a></string>
     <string name="login">登录</string>

@@ -38,6 +38,16 @@ public class LineChartView extends DemoView implements Runnable {
 
     //批注
     List<AnchorDataPoint> mAnchorSet = new ArrayList<AnchorDataPoint>();
+
+    public void setPowerLimit(double powerLimit){
+        if(powerLimit>10 || powerLimit<0){
+            powerLimit=5;
+        }
+        chartDataSet(powerLimit);
+        chartDesireLines(powerLimit);
+        new Thread(this).start();
+        invalidate();
+    }
     public LineChartView(Context context) {
         this(context, null);
     }
@@ -51,13 +61,15 @@ public class LineChartView extends DemoView implements Runnable {
         initView();
     }
 
+
+
     private void initView()
     {
         chartLabels();
-        chartDataSet();
-        chartDesireLines();
+       // chartDataSet();
+        //chartDesireLines();
         chartRender();
-        new Thread(this).start();
+       // new Thread(this).start();
 
         //綁定手势滑动事件
        // this.bindTouch(this,chart);
@@ -83,7 +95,7 @@ public class LineChartView extends DemoView implements Runnable {
             //设定数据源
             chart.setCategories(labels);
             //	chart.setDataSource(chartData);
-            //chart.setCustomLines(mCustomLineDataset);
+            chart.setCustomLines(mCustomLineDataset);
 
             //数据轴最大值
             chart.getDataAxis().setAxisMax(7);
@@ -169,24 +181,14 @@ public class LineChartView extends DemoView implements Runnable {
     //计算下平均线
     private double calcAvg()
     {
-//        double total = 400d + 480d + 500d + 560d + 800d + 950d +1200d + 630d + 710d;
-//        double yearNumber = 9d;
         double total = 2d + 1.5d + 3d + 2.5d + 1.2d + 3.3d +4.0d ;
         double yearNumber = 7d;
 
         return (total/yearNumber);
     }
 
-    private void chartDataSet()
+    private void chartDataSet(double powerLimitNum)
     {
-        //Line 1
-//        LinkedList<Double> dataSeries1= new LinkedList<Double>();
-//        dataSeries1.add(400d);
-//        dataSeries1.add(480d);
-//        dataSeries1.add(500d);
-//        dataSeries1.add(560d);
-//        LineData lineData1 = new LineData("单间(5层光线好)",dataSeries1, Color.rgb(234, 83, 71));
-//        lineData1.setDotStyle(XEnum.DotStyle.DOT);
 
         //Line 2
         LinkedList<Double> dataSeries2= new LinkedList<Double>();
@@ -206,24 +208,9 @@ public class LineChartView extends DemoView implements Runnable {
         lineData2.getLabelOptions().getBox().getBackgroundPaint().setColor(Color.rgb(76, 76, 76));
         //lineData2.getPlotLabel().hideBox();
 
-        //Line 3
-//        LinkedList<Double> dataSeries3= new LinkedList<Double>();
-//        dataSeries3.add(0d);
-//        dataSeries3.add(0d);
-//        dataSeries3.add(0d);
-//        dataSeries3.add(0d);
-//        dataSeries3.add(0d);
-//        dataSeries3.add(0d);
-//        dataSeries3.add(0d);
-//        dataSeries3.add(630d);
-//        dataSeries3.add(710d);
-//
-//        LineData lineData3 = new LineData("单间(9层无电梯)",dataSeries3,Color.rgb(123, 89, 168));
-//        lineData3.setDotStyle(XEnum.DotStyle.DOT);
-
         //轴上分界线的交叉点
         LinkedList<Double> dataSeries4= new LinkedList<Double>();
-        dataSeries4.add(5d);
+        dataSeries4.add(powerLimitNum);
 //        LinkedList<Double> dataSeries5= new LinkedList<Double>();
 //        dataSeries5.add(3000d);
         LinkedList<Double> dataSeries6= new LinkedList<Double>();
@@ -263,19 +250,15 @@ public class LineChartView extends DemoView implements Runnable {
         labels.add("周四");
         labels.add("周五");
         labels.add("周六");
-
-//        labels.add("2013");
-//        labels.add("2014");
     }
 
     /**
      * 期望线/分界线
      */
-    private void chartDesireLines()
+    private void chartDesireLines(double powerLimitNum)
     {
-        mCustomLineDataset.add(new CustomLineData("[预警线]",5d,Color.RED,5));
-//        mCustomLineDataset.add(new CustomLineData("舒适",3000d,Color.rgb(69, 181, 248),5));
-        mCustomLineDataset.add(new CustomLineData("[平均线]",calcAvg(),getResources().getColor(R.color.light_blue),6));
+        mCustomLineDataset.add(new CustomLineData("[预警线]",powerLimitNum,Color.RED,5));
+        mCustomLineDataset.add(new CustomLineData("[平均线]", calcAvg(), getResources().getColor(R.color.light_blue),6));
     }
 
     @Override
@@ -313,8 +296,7 @@ public class LineChartView extends DemoView implements Runnable {
 
                 //Log.e(TAG,"size = "+animationData.size());
                 chart.setDataSource(animationData);
-                if(i == count - 1)
-                {
+                if(i == count - 1){
                     chart.getDataAxis().show();
                     chart.getDataAxis().showAxisLabels();
 

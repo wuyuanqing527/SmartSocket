@@ -5,18 +5,19 @@ import java.io.Serializable;
 /**
  * Created by wyq on 2016/5/11.
  */
-public class TimerBean extends User implements Serializable{
+public class TimerBean implements Serializable {
 
-    private String startTime="";
-    private String endTime="";
-    private boolean onOff=false;
+    private String socketName = "";
+    private String startTime = "";
+    private String endTime = "";
+    private boolean onOff = false;
 
-    public String getEndTime() {
-        return endTime;
+    public String getSocketName() {
+        return socketName;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setSocketName(String socketName) {
+        this.socketName = socketName;
     }
 
     public String getStartTime() {
@@ -25,6 +26,14 @@ public class TimerBean extends User implements Serializable{
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public boolean isOnOff() {
@@ -38,7 +47,8 @@ public class TimerBean extends User implements Serializable{
     @Override
     public String toString() {
         return "TimerBean{" +
-                "startTime='" + startTime + '\'' +
+                "socketName='" + socketName + '\'' +
+                ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", onOff=" + onOff +
                 '}';

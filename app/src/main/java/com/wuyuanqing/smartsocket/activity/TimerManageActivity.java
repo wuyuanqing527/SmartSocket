@@ -2,12 +2,19 @@ package com.wuyuanqing.smartsocket.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
 import com.wuyuanqing.smartsocket.R;
+import com.wuyuanqing.smartsocket.constant.SmartSocketUrl;
+import com.wuyuanqing.smartsocket.model.ResTimer;
 import com.wuyuanqing.smartsocket.model.TimerBean;
+import com.wuyuanqing.smartsocket.util.JsonStringUtil;
+import com.wuyuanqing.smartsocket.util.OkHttpClientManager;
 import com.wuyuanqing.smartsocket.util.TimerListAdapter;
 
 import java.util.ArrayList;
@@ -21,6 +28,7 @@ public class TimerManageActivity extends BaseActivity {
     private Button addBt, backBt;
     private ListView timerList;
     private List<TimerBean> timerBeanList;
+    private String socketName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +38,16 @@ public class TimerManageActivity extends BaseActivity {
         backBt = (Button) findViewById(R.id.timer_manager_back_bt);
         timerList = (ListView) findViewById(R.id.timer_manager_listview);
 
+        socketName = getIntent().getStringExtra("socketName");
+       // l(socketName);
         timerBeanList = new ArrayList<>();
-        // TimerBean timerBean = (TimerBean) getIntent().getSerializableExtra("timerBean");
-        if (timerBeanList.size()>0) {
-            TimerListAdapter adapter = new TimerListAdapter(this, timerBeanList);
-            timerList.setAdapter(adapter);
-        }
+//        queryTimer();
+//
+//        // TimerBean timerBean = (TimerBean) getIntent().getSerializableExtra("timerBean");
+//        if (timerBeanList.size() > 0) {
+//            TimerListAdapter adapter = new TimerListAdapter(this, timerBeanList);
+//            timerList.setAdapter(adapter);
+//        }
         backBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,23 +57,56 @@ public class TimerManageActivity extends BaseActivity {
         addBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(TimerManageActivity.this, TimerSetActivity.class),1);
+
+                Intent intent=new Intent();
+                intent.putExtra("socketName",socketName);
+                intent.setClass(TimerManageActivity.this, TimerSetActivity.class);
+                startActivity(intent);
                 //finish();
             }
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1&&data!=null){
-            TimerBean timerBean = (TimerBean) data.getSerializableExtra("timerBean");
-            if(timerBean!=null){
-                timerBeanList.add(timerBean);
-                TimerListAdapter adapter = new TimerListAdapter(this, timerBeanList);
-                timerList.setAdapter(adapter);
-                timerList.invalidate();
+    private void queryTimer() {
+
+        Log.i("queryTimer", JsonStringUtil.queryTimer(socketName));
+        OkHttpClientManager.postAsyn(SmartSocketUrl.timerUrl, new OkHttpClientManager.ResultCallback<String>() {
+            @Override
+            public void onError(Request request, Exception e) {
+                l("访问服务器出现问题");
             }
-        }
+
+            @Override
+            public void onResponse(String response) {
+                if (response == null) {
+                    l("服务器返回值为空");
+                } else {
+                    l(response);
+                    ResTimer resTimer = new Gson().fromJson(response.toString(), ResTimer.class);
+                    if (resTimer.getResultCode() == 0) {
+                        l("查询所有定时失败");
+                    } else {
+                        List<TimerBean> timerBeans = resTimer.getTimerBeans();
+                        timerBeanList = timerBeans;
+                        if (timerBeanList.size() > 0) {
+                            TimerListAdapter adapter = new TimerListAdapter(TimerManageActivity.this, timerBeanList);
+                            timerList.setAdapter(adapter);
+                            timerList.invalidate();
+                        }
+                    }
+                }
+            }
+        }, new OkHttpClientManager.Param("queryAllTimer", JsonStringUtil.queryTimer(socketName)));
+
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        queryTimer();
+
+    }
+
 }
